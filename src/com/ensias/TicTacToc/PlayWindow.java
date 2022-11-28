@@ -31,7 +31,7 @@ public class PlayWindow extends JFrame implements ActionListener{
     private final int CHOIX_FRIEND = 0;
     private final int CHOIX_EASY 	= 1;
     private final int CHOIX_MEDIUM = 2;
-    private final int CHOIX_HARD	= 3;
+    private final int CHOIX_HARD	= 4;
     
     /* This Variables Using In Case Play With Friend */
     private static boolean player1 = true; // This Variable Tell Me Witch Player Play Now
