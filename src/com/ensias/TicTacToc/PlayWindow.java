@@ -13,17 +13,14 @@ import javax.swing.JOptionPane;
 
 public class PlayWindow extends JFrame implements ActionListener{
 	
-	private JLabel 	TableOfScore; // Print Table Of Score
+	private final JLabel 	TableOfScore; // Print Table Of Score
 	private int xScore = 0; // This Value Is The Point Wined By X
     private int oScore = 0; // This Value Is The Point Wined By O
-    private JButton buttonsXO[]; // This Button Using For Input XO 
-    private JButton btnReset; // This Button Using For Clear Screen & Reset Score
-    private JButton btnClear; // This Button Using For Clean Screen
-    private JButton btnBackToMain; // This Button Using For Back To The Main Window
+    private final JButton[] buttonsXO; // This Button Using For Input XO
     private final static int BUTTON_XO_WIDTH = 80; // The Width Of The Button XO
     private final static int BUTTON_XO_HEIGHT = 80; // The Height  Of The Button XO
-	private final static int POSITION_XO_H[] = {30, BUTTON_XO_WIDTH * 1 + 30, BUTTON_XO_WIDTH * 2 + 30, BUTTON_XO_WIDTH * 3 + 30}; // Dimension Of Button Horizontal
-	private final static int POSITION_XO_V[] = {120, BUTTON_XO_WIDTH * 1 + 120, BUTTON_XO_WIDTH * 2 + 120, BUTTON_XO_WIDTH * 3 + 120 + 20}; // Dimontion Of Button Vertical & The Value 20 For Margin-Top
+	private final static int POSITION_XO_H[] = {30, BUTTON_XO_WIDTH + 30, BUTTON_XO_WIDTH * 2 + 30, BUTTON_XO_WIDTH * 3 + 30}; // Dimension Of Button Horizontal
+	private final static int POSITION_XO_V[] = {120, BUTTON_XO_WIDTH + 120, BUTTON_XO_WIDTH * 2 + 120, BUTTON_XO_WIDTH * 3 + 120 + 20}; // Dimontion Of Button Vertical & The Value 20 For Margin-Top
 	private static int i = 0; // This Is Counter Using in Loop
 
 	private final int CHOIX_LEVEL;
@@ -31,17 +28,16 @@ public class PlayWindow extends JFrame implements ActionListener{
     private final int CHOIX_FRIEND = 0;
     private final int CHOIX_EASY 	= 1;
     private final int CHOIX_MEDIUM = 2;
-    private final int CHOIX_HARD	= 3;
-    
+
     /* This Variables Using In Case Play With Friend */
     private static boolean player1 = true; // This Variable Tell Me Witch Player Play Now
     
     /* This Variables Using In Case Play With PC Level Easy */
-    private static Random rand = new Random(); // Get Random Value
+    private static final Random rand = new Random(); // Get Random Value
     private boolean printRand = true; // Check This Value if True Print XO For PC
     
     /* This Variables Using In Case Play With PC Level Medium OR Hard*/
-    private int arrayRows[] = new int[8]; // This Table is add : ( 1 For X ) And ( -1 For O )
+    private final int[] arrayRows = new int[8]; // This Table is add : ( 1 For X ) And ( -1 For O )
     private boolean mCenterFirst = false;
     private boolean mCornerFirst = false;
     private boolean mHvFirst = false;
@@ -92,7 +88,8 @@ public class PlayWindow extends JFrame implements ActionListener{
             buttonsXO[i].addActionListener(this);
         }
 
-        btnReset = new JButton("Reset");
+        // This Button Using For Clear Screen & Reset Score
+        JButton btnReset = new JButton("Reset");
         btnReset.setBounds(POSITION_XO_H[0], POSITION_XO_V[3], BUTTON_XO_WIDTH * 3 / 2 - 10, 40);
         btnReset.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         btnReset.addActionListener(event -> {
@@ -101,7 +98,8 @@ public class PlayWindow extends JFrame implements ActionListener{
         });
         this.add(btnReset);
 
-        btnClear = new JButton("Clear");
+        // This Button Using For Clean Screen
+        JButton btnClear = new JButton("Clear");
         btnClear.setBounds(POSITION_XO_H[0] + btnReset.getWidth() + 20, POSITION_XO_V[3], BUTTON_XO_WIDTH * 3 / 2 - 10, 40);
         btnClear.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         btnClear.addActionListener(event -> {
@@ -109,7 +107,8 @@ public class PlayWindow extends JFrame implements ActionListener{
         });
         this.add(btnClear);
 
-        btnBackToMain = new JButton("Back To Main");
+        // This Button Using For Back To The Main Window
+        JButton btnBackToMain = new JButton("Back To Main");
         btnBackToMain.setBounds(POSITION_XO_H[0], POSITION_XO_V[3] + 50, BUTTON_XO_WIDTH * 3, 40);
         btnBackToMain.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         btnBackToMain.addActionListener(event -> {
@@ -126,8 +125,9 @@ public class PlayWindow extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-    	
-    	if (CHOIX_LEVEL == CHOIX_FRIEND) {
+
+        int CHOIX_HARD = 3;
+        if (CHOIX_LEVEL == CHOIX_FRIEND) {
     		for(i = 0; i < 9; i++){
         		if (e.getSource().equals(buttonsXO[i])) // If ButtonsXO[i] Is Clicked ?
         			printXOForFriend(i); // Fill The ButtonXO In The Index i By X Or O 
