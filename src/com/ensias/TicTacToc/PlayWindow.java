@@ -18,12 +18,12 @@ public class PlayWindow extends JFrame implements ActionListener{
     private int oScore = 0; // This Value Is The Point Wined By O
     private JButton buttonsXO[]; // This Button Using For Input XO 
     private JButton btnReset; // This Button Using For Clear Screen & Reset Score
-    private JButton btnClear; // This Button Using For Clean Screen
-    private JButton btnBackToMain; // This Button Using For Back To The Main Window
+    private final JButton btnClear; // This Button Using For Clean Screen
+    private final JButton btnBackToMain; // This Button Using For Back To The Main Window
     private final static int BUTTON_XO_WIDTH = 80; // The Width Of The Button XO
     private final static int BUTTON_XO_HEIGHT = 80; // The Height  Of The Button XO
-	private final static int POSITION_XO_H[] = {30, BUTTON_XO_WIDTH * 1 + 30, BUTTON_XO_WIDTH * 2 + 30, BUTTON_XO_WIDTH * 3 + 30}; // Dimension Of Button Horizontal
-	private final static int POSITION_XO_V[] = {120, BUTTON_XO_WIDTH * 1 + 120, BUTTON_XO_WIDTH * 2 + 120, BUTTON_XO_WIDTH * 3 + 120 + 20}; // Dimontion Of Button Vertical & The Value 20 For Margin-Top
+	private final static int[] POSITION_XO_H = {30, BUTTON_XO_WIDTH * 1 + 30, BUTTON_XO_WIDTH * 2 + 30, BUTTON_XO_WIDTH * 3 + 30}; // Dimension Of Button Horizontal
+	private final static int[] POSITION_XO_V = {120, BUTTON_XO_WIDTH * 1 + 120, BUTTON_XO_WIDTH * 2 + 120, BUTTON_XO_WIDTH * 3 + 120 + 20}; // Dimontion Of Button Vertical & The Value 20 For Margin-Top
 	private static int i = 0; // This Is Counter Using in Loop
 
 	private final int CHOIX_LEVEL;
@@ -31,7 +31,7 @@ public class PlayWindow extends JFrame implements ActionListener{
     private final int CHOIX_FRIEND = 0;
     private final int CHOIX_EASY 	= 1;
     private final int CHOIX_MEDIUM = 2;
-    private final int CHOIX_HARD	= 3;
+    private final int CHOIX_HARD	= 4;
     
     /* This Variables Using In Case Play With Friend */
     private static boolean player1 = true; // This Variable Tell Me Witch Player Play Now
