@@ -5,18 +5,18 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URI;
+import java.util.Objects;
 
 public class AboutWindow extends JDialog implements MouseListener {
-    
-    private static JLabel labelCopyRight; // This Label Using For Write Copy Right
-    private static JLabel labelImg[]; // This Label Contain Image Of Social Media & Account About EasyCodeTeam
-    private static JLabel labelLogo; // This Label Using For Display Logo Of My Team
-    private final static String IMAGE_NAME[] = {"facebook", "twitter", "youtube", "github"}; // This Table Contain The Name Of My Icon Of Social Media , And Using To Import this Icon
+
+    private static JLabel[] labelImg; // This Label Contain Image Of Social Media & Account About EasyCodeTeam
+    private final static String[] IMAGE_NAME = {"facebook", "twitter", "youtube", "github"}; // This Table Contain The Name Of My Icon Of Social Media , And Using To Import this Icon
     private final static int NUMBER_OF_IMAGES = IMAGE_NAME.length;
 
     public AboutWindow() {
         // load the image to a imageIcon & Import Icon From WorkSpace To Replace In This Label
-        labelLogo = new JLabel(new ImageIcon(getClass().getResource("/com/ensias/TicTacToc/images/logo.png")));
+        // This Label Using For Display Logo Of My Team
+        JLabel labelLogo = new JLabel(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/ensias/TicTacToc/images/logo.png"))));
     	labelLogo.setBounds(90, 60, 150, 150); // Set The Position , Height And Width Of The Label setBounds(x, y, Width, Height)
     	this.add(labelLogo); // Add The Label To My About Window
     	
@@ -24,7 +24,7 @@ public class AboutWindow extends JDialog implements MouseListener {
     	
     	labelImg = new JLabel[NUMBER_OF_IMAGES]; // Initialize The Table By Four JLabel
         for (int i = 0; i < NUMBER_OF_IMAGES; i++) {
-        	labelImg[i] = new JLabel(new ImageIcon(getClass().getResource("/com/ensias/TicTacToc/images/" + IMAGE_NAME[i]  + ".png")));
+        	labelImg[i] = new JLabel(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/ensias/TicTacToc/images/" + IMAGE_NAME[i] + ".png"))));
         	labelImg[i].setBounds(90 + 40 * i, 290, 32, 32);
                 labelImg[i].addMouseListener(this);
         	this.add(labelImg[i]); // Add My Label Image To My About Window
@@ -33,7 +33,8 @@ public class AboutWindow extends JDialog implements MouseListener {
         
         /* This Part Bellow For Change The Label Of Copy Right */
 
-        labelCopyRight = new JLabel("Copyright Ⓒ EasyCodeTeam, All Right Reserved 2017."); // Create New Instance From JLabel & Set By Paragraph
+        // This Label Using For Write Copy Right
+        JLabel labelCopyRight = new JLabel("Copyright Ⓒ EasyCodeTeam, All Right Reserved 2017."); // Create New Instance From JLabel & Set By Paragraph
         labelCopyRight.setBounds(15, 330, 300, 30);
         this.add(labelCopyRight);
         
@@ -49,12 +50,12 @@ public class AboutWindow extends JDialog implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        for(int i = 0; i < labelImg.length; i++)
-        if (e.getSource().equals(labelImg[i]))
-            try {
-                Desktop.getDesktop().browse(new URI("https://www." + IMAGE_NAME[i] + ".com/HouariZegai"));
-        } catch (Exception ex) {
-            
+        for (int i = 0; i < labelImg.length; i++) {
+            if (e.getSource().equals(labelImg[i]))
+                try {
+                    Desktop.getDesktop().browse(new URI("https://www." + IMAGE_NAME[i] + ".com/HouariZegai"));
+                } catch (Exception ignored) {
+                }
         }
     }
 

@@ -4,41 +4,42 @@ import javax.swing.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 
 public class MainWindow extends JFrame implements ActionListener{
-    
-    private final JLabel labelSelect; // OutPut String In Screen
+
     private JLabel labelChoix; // Print String In Screen
-    private final JButton btnWithFriend; // Button Play With Friend   
-    private final JButton btnWithPc; // Button Play With PC
-    private final JButton btnAbout; // Button About This Application
-    private JRadioButton choixWithPc[] = new JRadioButton[3]; // RadioButton Choix:  0:Easy, 1:Medium & :2Hard
+    private final JRadioButton[] choixWithPc = new JRadioButton[3]; // RadioButton Choix:  0:Easy, 1:Medium & :2Hard
     private boolean showHidePcPlay = false; // This Boolean Using For Show or Hide Choix
-    private final Font FontForLabel = new Font("Comic Sans MS", Font.PLAIN, 16); // Create New Instance for Change this Value: Font(Font-Family, Font-Weight, Font-Size)
     private static int i = 0; // This Variable Using In Loop
     
     MainWindow() {
-        
-        labelSelect = new JLabel(PlayWindow.setColor("Please Select Type Of Game :", "blue")); // Create New Instance From JLabel & Add + Change The Color For The Text 
+
+        // OutPut String In Screen
+        JLabel labelSelect = new JLabel(PlayWindow.setColor("Please Select Type Of Game :", "blue")); // Create New Instance From JLabel & Add + Change The Color For The Text
         labelSelect.setBounds(20, 40, 315, 50); // Set The Position , Height And Width Of The Label setBounds(x, y, Width, Height)
         labelSelect.setFont(new Font("Comic Sans Ms", Font.PLAIN, 15)); // Change The Font : (Font-Family, Font-Weight, Font-Size)
         this.add(labelSelect); // Add The Label To My About Window
-        
-        btnWithFriend = new JButton("Play With My Friend");
+
+        // Button Play With Friend
+        JButton btnWithFriend = new JButton("Play With My Friend");
         btnWithFriend.setBounds(20, 100, 250, 50);
-        btnWithFriend.setFont(FontForLabel);
+        // Create New Instance for Change this Value: Font(Font-Family, Font-Weight, Font-Size)
+        Font fontForLabel = new Font("Comic Sans MS", Font.PLAIN, 16);
+        btnWithFriend.setFont(fontForLabel);
         btnWithFriend.addActionListener(event -> { // If I Click This Button Call This Block To Execute 
         	new PlayWindow(0); // Create New Window From The Class PlayWithFriend 
             this.setVisible(false); // Hide My Main Window
         });
         this.add(btnWithFriend);
-        
-        btnWithPc = new JButton("Play With PC");
+
+        // Button Play With PC
+        JButton btnWithPc = new JButton("Play With PC");
         btnWithPc.setBounds(20, 160, 250, 50);
-        btnWithPc.setFont(FontForLabel);
+        btnWithPc.setFont(fontForLabel);
         btnWithPc.addActionListener(event -> { // If I Click To "With PC" Button Execute This Block ( Show Or Hide Choix & Resize The Main Window )
-        	showHidePcPlay = (showHidePcPlay)? false : true; // Inverse The Value Of The Variable By True Or False
+        	showHidePcPlay = !showHidePcPlay; // Inverse The Value Of The Variable By True Or False
         	labelChoix.setVisible(showHidePcPlay); // Show Or Hide The labelChoix
         	for(i = 0; i < 3; i++)
         		choixWithPc[i].setVisible(showHidePcPlay); // Show Or Hide The JRadioButton
@@ -62,12 +63,11 @@ public class MainWindow extends JFrame implements ActionListener{
         	choixWithPc[i].addActionListener(this);
 	        this.add(choixWithPc[i]);
         }
-        
-        btnAbout = new JButton("About");
+
+        // Button About This Application
+        JButton btnAbout = new JButton("About");
         btnAbout.setBounds(200, 10, 70, 25);
-        btnAbout.addActionListener(event -> {
-            new AboutWindow();
-        });
+        btnAbout.addActionListener(event -> new AboutWindow());
         this.add(btnAbout);
         
         setTitle("TicTacToc Game"); // Edit (Set) The Title Of My Main Window
@@ -75,7 +75,7 @@ public class MainWindow extends JFrame implements ActionListener{
         setLayout(null); // Disable All Layout Because I Control The Position Of My Elements By The Function setBounds(x, y, Width, Height)
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // If I Click To The Close Button Stop Process
         setVisible(true); // Show The Window To The Screen
-        setIconImage(new ImageIcon(getClass().getResource("/com/ensias/TicTacToc/images/logo.png")).getImage());
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource("/com/ensias/TicTacToc/images/logo.png"))).getImage());
     }
     
 	@Override
