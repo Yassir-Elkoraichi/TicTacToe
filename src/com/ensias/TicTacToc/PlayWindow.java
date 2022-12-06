@@ -13,17 +13,16 @@ import javax.swing.JOptionPane;
 
 public class PlayWindow extends JFrame implements ActionListener{
 	
-	private JLabel 	TableOfScore; // Print Table Of Score
+	private final JLabel 	TableOfScore; // Print Table Of Score
 	private int xScore = 0; // This Value Is The Point Wined By X
     private int oScore = 0; // This Value Is The Point Wined By O
-    private JButton buttonsXO[]; // This Button Using For Input XO 
-    private JButton btnReset; // This Button Using For Clear Screen & Reset Score
-    private final JButton btnClear; // This Button Using For Clean Screen
-    private final JButton btnBackToMain; // This Button Using For Back To The Main Window
+
+    private final JButton[] buttonsXO; // This Button Using For Input XO
     private final static int BUTTON_XO_WIDTH = 80; // The Width Of The Button XO
     private final static int BUTTON_XO_HEIGHT = 80; // The Height  Of The Button XO
-	private final static int[] POSITION_XO_H = {30, BUTTON_XO_WIDTH * 1 + 30, BUTTON_XO_WIDTH * 2 + 30, BUTTON_XO_WIDTH * 3 + 30}; // Dimension Of Button Horizontal
-	private final static int[] POSITION_XO_V = {120, BUTTON_XO_WIDTH * 1 + 120, BUTTON_XO_WIDTH * 2 + 120, BUTTON_XO_WIDTH * 3 + 120 + 20}; // Dimontion Of Button Vertical & The Value 20 For Margin-Top
+	private final static int[] POSITION_XO_H = {30, BUTTON_XO_WIDTH + 30, BUTTON_XO_WIDTH * 2 + 30, BUTTON_XO_WIDTH * 3 + 30}; // Dimension Of Button Horizontal
+	private final static int[] POSITION_XO_V = {120, BUTTON_XO_WIDTH + 120, BUTTON_XO_WIDTH * 2 + 120, BUTTON_XO_WIDTH * 3 + 120 + 20}; // Dimontion Of Button Vertical & The Value 20 For Margin-Top
+
 	private static int i = 0; // This Is Counter Using in Loop
 
 	private final int CHOIX_LEVEL;
@@ -31,17 +30,19 @@ public class PlayWindow extends JFrame implements ActionListener{
     private final int CHOIX_FRIEND = 0;
     private final int CHOIX_EASY 	= 1;
     private final int CHOIX_MEDIUM = 2;
-    private final int CHOIX_HARD	= 4;
+
+    private final int CHOIX_HARD	= 3;
     
+
     /* This Variables Using In Case Play With Friend */
     private static boolean player1 = true; // This Variable Tell Me Witch Player Play Now
     
     /* This Variables Using In Case Play With PC Level Easy */
-    private static Random rand = new Random(); // Get Random Value
+    private static final Random rand = new Random(); // Get Random Value
     private boolean printRand = true; // Check This Value if True Print XO For PC
     
     /* This Variables Using In Case Play With PC Level Medium OR Hard*/
-    private int arrayRows[] = new int[8]; // This Table is add : ( 1 For X ) And ( -1 For O )
+    private final int[] arrayRows = new int[8]; // This Table is add : ( 1 For X ) And ( -1 For O )
     private boolean mCenterFirst = false;
     private boolean mCornerFirst = false;
     private boolean mHvFirst = false;
@@ -51,8 +52,7 @@ public class PlayWindow extends JFrame implements ActionListener{
     private boolean mHvAfterHv = false;
     private int mCounter = 0;
     private boolean mCorner = false;
-    private boolean mHvAfterCenter = false;  
-    
+
     PlayWindow(int CHOIX_LEVEL) {  // CHOIX_LEVEL = 0:WithFriend, 1:Easy, 2:Medium, 3:Hard
     	
     	this.CHOIX_LEVEL = CHOIX_LEVEL;
@@ -92,7 +92,8 @@ public class PlayWindow extends JFrame implements ActionListener{
             buttonsXO[i].addActionListener(this);
         }
 
-        btnReset = new JButton("Reset");
+        // This Button Using For Clear Screen & Reset Score
+        JButton btnReset = new JButton("Reset");
         btnReset.setBounds(POSITION_XO_H[0], POSITION_XO_V[3], BUTTON_XO_WIDTH * 3 / 2 - 10, 40);
         btnReset.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         btnReset.addActionListener(event -> {
@@ -101,15 +102,15 @@ public class PlayWindow extends JFrame implements ActionListener{
         });
         this.add(btnReset);
 
-        btnClear = new JButton("Clear");
+        // This Button Using For Clean Screen
+        JButton btnClear = new JButton("Clear");
         btnClear.setBounds(POSITION_XO_H[0] + btnReset.getWidth() + 20, POSITION_XO_V[3], BUTTON_XO_WIDTH * 3 / 2 - 10, 40);
         btnClear.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        btnClear.addActionListener(event -> {
-        	clear();
-        });
+        btnClear.addActionListener(event -> clear());
         this.add(btnClear);
 
-        btnBackToMain = new JButton("Back To Main");
+        // This Button Using For Back To The Main Window
+        JButton btnBackToMain = new JButton("Back To Main");
         btnBackToMain.setBounds(POSITION_XO_H[0], POSITION_XO_V[3] + 50, BUTTON_XO_WIDTH * 3, 40);
         btnBackToMain.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         btnBackToMain.addActionListener(event -> {
@@ -126,8 +127,9 @@ public class PlayWindow extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
-    	
-    	if (CHOIX_LEVEL == CHOIX_FRIEND) {
+
+        int CHOIX_HARD = 3;
+        if (CHOIX_LEVEL == CHOIX_FRIEND) {
     		for(i = 0; i < 9; i++){
         		if (e.getSource().equals(buttonsXO[i])) // If ButtonsXO[i] Is Clicked ?
         			printXOForFriend(i); // Fill The ButtonXO In The Index i By X Or O 
@@ -254,7 +256,6 @@ public class PlayWindow extends JFrame implements ActionListener{
             mCornerAfterCenter = false;
             mHvAfterHv = false;
             mCorner = false;
-            mHvAfterCenter = false;
             mCounter = 0;
         }
     }
@@ -316,15 +317,12 @@ public class PlayWindow extends JFrame implements ActionListener{
     
     private void printXOForMeMedium(int index) {
         buttonsXO[index].setText(setColor("X", "green"));
+        // The Corner
         if (index == 4) {
             if (mCounter == 0) { // Check If The First Checked Is The Center
                 mCenterFirst = true;
             }
-        } else if (index == 0 || index == 2 || index == 6 || index == 8) { // The Corner
-            mCorner = true;
-        } else {
-            mCorner = false;
-        }
+        } else mCorner = index == 0 || index == 2 || index == 6 || index == 8;
         fillArray(index, 1);
         mCounter++;
     }
@@ -361,7 +359,6 @@ public class PlayWindow extends JFrame implements ActionListener{
                     mHvAfterHv = true;
                     mHvFirst = false;
                 } else if (mCenterFirst) {
-                    mHvAfterCenter = true;
                     mCornerAfterCenter = false;
                     mCenterFirst = false;
                 } else {
@@ -537,48 +534,48 @@ public class PlayWindow extends JFrame implements ActionListener{
     
     private void fillArray(int cases, int current) {
         switch (cases) {
-            case 0:
+            case 0 -> {
                 arrayRows[0] += current;
                 arrayRows[3] += current;
                 arrayRows[7] += current;
-                break;
-            case 1:
+            }
+            case 1 -> {
                 arrayRows[0] += current;
                 arrayRows[4] += current;
-                break;
-            case 2:
+            }
+            case 2 -> {
                 arrayRows[0] += current;
                 arrayRows[5] += current;
                 arrayRows[6] += current;
-                break;
-            case 3:
+            }
+            case 3 -> {
                 arrayRows[1] += current;
                 arrayRows[3] += current;
-                break;
-            case 4:
+            }
+            case 4 -> {
                 arrayRows[1] += current;
                 arrayRows[4] += current;
                 arrayRows[6] += current;
                 arrayRows[7] += current;
-                break;
-            case 5:
+            }
+            case 5 -> {
                 arrayRows[1] += current;
                 arrayRows[5] += current;
-                break;
-            case 6:
+            }
+            case 6 -> {
                 arrayRows[2] += current;
                 arrayRows[3] += current;
                 arrayRows[6] += current;
-                break;
-            case 7:
+            }
+            case 7 -> {
                 arrayRows[2] += current;
                 arrayRows[4] += current;
-                break;
-            case 8:
+            }
+            case 8 -> {
                 arrayRows[2] += current;
                 arrayRows[5] += current;
                 arrayRows[7] += current;
-                break;
+            }
         }
     }
     
@@ -608,26 +605,17 @@ public class PlayWindow extends JFrame implements ActionListener{
     }
 
     private static int[] getTargetRow(int index) {
-        switch (index) {
-            case 0:
-                return new int[]{0, 1, 2};
-            case 1:
-                return new int[]{3, 4, 5};
-            case 2:
-                return new int[]{6, 7, 8};
-            case 3:
-                return new int[]{0, 3, 6};
-            case 4:
-                return new int[]{1, 4, 7};
-            case 5:
-                return new int[]{2, 5, 8};
-            case 6:
-                return new int[]{2, 4, 6};
-            case 7:
-                return new int[]{0, 4, 8};
-            default:
-                return new int[]{};
-        }
+        return switch (index) {
+            case 0 -> new int[]{0, 1, 2};
+            case 1 -> new int[]{3, 4, 5};
+            case 2 -> new int[]{6, 7, 8};
+            case 3 -> new int[]{0, 3, 6};
+            case 4 -> new int[]{1, 4, 7};
+            case 5 -> new int[]{2, 5, 8};
+            case 6 -> new int[]{2, 4, 6};
+            case 7 -> new int[]{0, 4, 8};
+            default -> new int[]{};
+        };
     }
 
     private int getIndexOfTheEmptyCase(int[] array) {
